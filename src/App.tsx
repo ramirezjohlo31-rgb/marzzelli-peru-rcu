@@ -283,7 +283,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#3d3f43] text-[#722F37]">
-      <header className="fixed inset-x-0 top-0 z-40 bg-[#F7F3EB] text-[#2c2929] shadow-[0_1px_0_rgba(0,0,0,.08)]">
+      <header className="fixed inset-x-0 top-0 z-40 bg-[#f3f4f6] text-[#2c2929] shadow-[0_1px_0_rgba(0,0,0,.08)]">
         <div className="hidden h-8 items-center justify-between bg-[#303236] px-10 text-[10px] font-semibold tracking-wide text-white/75 sm:flex">
           <span>HECHO EN PERÚ · CUERO SELECCIONADO</span>
           <div className="flex gap-6">
@@ -296,13 +296,12 @@ export default function App() {
           </div>
         </div>
         <div className="mx-auto flex h-18 max-w-384 items-center justify-between px-5 lg:px-10">
-          <a href="#" className="flex items-center gap-2" aria-label="Marzzelli, inicio">
-            <span className="grid h-10 w-10 place-items-center bg-[#722F37] font-serif text-xl font-bold italic text-white">
-              M
-            </span>
-            <strong className="hidden font-serif text-lg tracking-[0.11em] sm:block">
-              MARZZELLI
-            </strong>
+          <a href="#" className="flex items-center" aria-label="Marzzelli, inicio">
+            <img
+              src={`${import.meta.env.BASE_URL}marzzelli-logo.jpeg`}
+              alt="Marzzelli"
+              className="h-10 w-auto sm:h-11"
+            />
           </a>
 
           <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 text-sm font-semibold lg:flex">
