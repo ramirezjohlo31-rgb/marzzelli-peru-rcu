@@ -298,7 +298,7 @@ export default function App() {
         <div className="mx-auto flex h-18 max-w-384 items-center justify-between px-5 lg:px-10">
           <a href="#" className="flex items-center" aria-label="Marzzelli, inicio">
             <img
-              src={`${import.meta.env.BASE_URL}marzzelli-logo.jpeg`}
+              src={`${import.meta.env.BASE_URL}marzzelli-logo.png`}
               alt="Marzzelli"
               className="h-10 w-auto sm:h-11"
             />
@@ -681,7 +681,7 @@ export default function App() {
         <div className="mx-auto grid max-w-360 gap-12 border-b border-[#722F37]/15 pb-14 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <img
-              src={`${import.meta.env.BASE_URL}marzzelli-logo.jpeg`}
+              src={`${import.meta.env.BASE_URL}marzzelli-logo.png`}
               alt="Marzzelli"
               className="h-10 w-auto"
             />
@@ -728,7 +728,7 @@ export default function App() {
         <div className="fixed inset-0 z-50 bg-[#f3f4f6] p-6 text-[#722F37] lg:hidden">
           <div className="flex items-center justify-between">
             <img
-              src={`${import.meta.env.BASE_URL}marzzelli-logo.jpeg`}
+              src={`${import.meta.env.BASE_URL}marzzelli-logo.png`}
               alt="Marzzelli"
               className="h-9 w-auto"
             />
