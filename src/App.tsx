@@ -677,53 +677,61 @@ export default function App() {
         </section>
       </main>
 
-      <footer id="contacto" className="bg-[#242528] px-5 pt-16 text-white lg:px-10">
-        <div className="mx-auto grid max-w-360 gap-12 border-b border-white/10 pb-14 md:grid-cols-2 lg:grid-cols-4">
+      <footer id="contacto" className="bg-[#f3f4f6] px-5 pt-16 text-[#722F37] lg:px-10">
+        <div className="mx-auto grid max-w-360 gap-12 border-b border-[#722F37]/15 pb-14 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="font-serif text-2xl tracking-[0.14em]">MARZZELLI</p>
-            <p className="mt-5 max-w-xs text-sm leading-6 text-white/50">
+            <img
+              src={`${import.meta.env.BASE_URL}marzzelli-logo.jpeg`}
+              alt="Marzzelli"
+              className="h-10 w-auto"
+            />
+            <p className="mt-5 max-w-xs text-sm leading-6 text-[#756669]">
               Marroquinería fina peruana para acompañarte por muchos años.
             </p>
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#ff6965]">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#722F37]">
               Visítanos
             </h3>
-            <p className="mt-5 text-sm leading-7 text-white/60">
+            <p className="mt-5 text-sm leading-7 text-[#756669]">
               Lima, Perú
               <br />
               Atención previa coordinación
             </p>
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#ff6965]">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#722F37]">
               Contacto
             </h3>
-            <p className="mt-5 text-sm leading-7 text-white/60">
+            <p className="mt-5 text-sm leading-7 text-[#756669]">
               ventas@marzzelli.pe
               <br />
               +51 999 999 999
             </p>
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#ff6965]">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#722F37]">
               Síguenos
             </h3>
-            <button className="mt-5 flex items-center gap-3 text-sm text-white/60 transition hover:text-white">
+            <button className="mt-5 flex items-center gap-3 text-sm text-[#756669] transition hover:text-[#722F37]">
               <Camera size={18} /> Instagram
             </button>
           </div>
         </div>
-        <div className="mx-auto flex max-w-360 flex-col gap-2 py-6 text-xs text-white/35 sm:flex-row sm:justify-between">
+        <div className="mx-auto flex max-w-360 flex-col gap-2 py-6 text-xs text-[#756669] sm:flex-row sm:justify-between">
           <span>© 2025 Industrias Marzzelli Perú Cueros E.I.R.L.</span>
           <span>Diseñado y confeccionado en Perú</span>
         </div>
       </footer>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-50 bg-[#242528] p-6 text-white lg:hidden">
+        <div className="fixed inset-0 z-50 bg-[#f3f4f6] p-6 text-[#722F37] lg:hidden">
           <div className="flex items-center justify-between">
-            <span className="font-serif text-xl tracking-[0.14em]">MARZZELLI</span>
+            <img
+              src={`${import.meta.env.BASE_URL}marzzelli-logo.jpeg`}
+              alt="Marzzelli"
+              className="h-9 w-auto"
+            />
             <button onClick={() => setMenuOpen(false)} aria-label="Cerrar menú">
               <X />
             </button>
