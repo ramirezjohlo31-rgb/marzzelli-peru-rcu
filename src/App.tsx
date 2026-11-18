@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Menu,
   Minus,
+  Moon,
   PackageCheck,
   Plus,
   Quote,
@@ -15,6 +16,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   Sparkles,
+  Sun,
   Trash2,
   Truck,
   X,
@@ -207,6 +209,14 @@ export default function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([]);
+  const [theme, setTheme] = useState<"light" | "dark">(() =>
+    localStorage.getItem("marzzelli-theme") === "dark" ? "dark" : "light",
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("marzzelli-theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     const timer = window.setInterval(
@@ -236,6 +246,10 @@ export default function App() {
   );
 
   const quoteCount = quoteItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  function toggleTheme() {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  }
 
   function openProduct(product: Product) {
     setSelectedProduct(product);
@@ -282,9 +296,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#3d3f43] text-[#722F37]">
-      <header className="fixed inset-x-0 top-0 z-40 bg-[#f3f4f6] text-[#2c2929] shadow-[0_1px_0_rgba(0,0,0,.08)]">
-        <div className="hidden h-8 items-center justify-between bg-[#303236] px-10 text-[10px] font-semibold tracking-wide text-white/75 sm:flex">
+    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-heading)]">
+      <header className="fixed inset-x-0 top-0 z-40 bg-[var(--bg-header)] text-[var(--text-header)] shadow-[0_1px_0_rgba(0,0,0,.08)]">
+        <div className="hidden h-8 items-center justify-between bg-[var(--bg-dark)] px-10 text-[10px] font-semibold tracking-wide text-white/75 sm:flex">
           <span>HECHO EN PERÚ · CUERO SELECCIONADO</span>
           <div className="flex gap-6">
             <a href="#empresa" className="hover:text-white">
@@ -323,28 +337,36 @@ export default function App() {
           </nav>
 
           <div className="flex items-center gap-1">
+            <button
+              onClick={toggleTheme}
+              className="grid h-11 w-11 place-items-center rounded-full transition hover:bg-[var(--bg-subtle)]"
+              aria-label={theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
+              title={theme === "dark" ? "Modo claro" : "Modo oscuro"}
+            >
+              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
             <a
               href="#coleccion"
-              className="hidden h-10 items-center gap-2 rounded-full bg-[#e8e4dd] px-4 text-sm text-[#625b5c] transition hover:bg-[#ddd7cf] xl:flex"
+              className="hidden h-10 items-center gap-2 rounded-full bg-[var(--bg-subtle)] px-4 text-sm text-[var(--text-muted)] transition hover:bg-[var(--bg-subtle-hover)] xl:flex"
             >
               <Search size={18} />
               <span>Buscar</span>
             </a>
             <button
               onClick={() => setCartOpen(true)}
-              className="relative grid h-11 w-11 place-items-center rounded-full transition hover:bg-[#e8e4dd]"
+              className="relative grid h-11 w-11 place-items-center rounded-full transition hover:bg-[var(--bg-subtle)]"
               aria-label={`Abrir cotización, ${quoteCount} productos`}
             >
               <ShoppingBag size={21} />
               {quoteCount > 0 && (
-                <span className="absolute right-0 top-0 grid h-5 min-w-5 place-items-center rounded-full bg-[#E53935] px-1 text-[10px] text-white">
+                <span className="absolute right-0 top-0 grid h-5 min-w-5 place-items-center rounded-full bg-[var(--accent)] px-1 text-[10px] text-white">
                   {quoteCount}
                 </span>
               )}
             </button>
             <button
               onClick={() => setMenuOpen(true)}
-              className="grid h-11 w-11 place-items-center rounded-full hover:bg-[#e8e4dd] lg:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full hover:bg-[var(--bg-subtle)] lg:hidden"
               aria-label="Abrir menú"
             >
               <Menu />
@@ -354,7 +376,7 @@ export default function App() {
       </header>
 
       <main>
-        <section id="novedades" className="bg-[#F7F3EB] pt-18 sm:pt-26">
+        <section id="novedades" className="bg-[var(--bg-cream)] pt-18 sm:pt-26">
           <div className="relative h-[58vh] min-h-120 overflow-hidden sm:h-[70vh]">
             {heroSlides.map((item, index) => (
               <div
@@ -386,13 +408,13 @@ export default function App() {
             </div>
           </div>
           <div className="mx-auto flex max-w-4xl flex-col items-center px-5 py-12 text-center sm:py-16">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#E53935]">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--accent)]">
               {heroSlides[slide].eyebrow}
             </p>
-            <h1 className="mt-3 font-serif text-4xl leading-[1.02] tracking-[-0.035em] text-[#722F37] sm:text-6xl lg:text-7xl">
+            <h1 className="mt-3 font-serif text-4xl leading-[1.02] tracking-[-0.035em] text-[var(--text-heading)] sm:text-6xl lg:text-7xl">
               {heroSlides[slide].title}
             </h1>
-            <p className="mt-5 max-w-2xl text-sm leading-6 text-[#665d5e] sm:text-base">
+            <p className="mt-5 max-w-2xl text-sm leading-6 text-[var(--text-hero)] sm:text-base">
               {heroSlides[slide].text}
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
@@ -406,7 +428,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className="border-y border-[#722F37]/10 bg-white text-[#3a3435]">
+        <section className="border-y border-[var(--border-faint)] bg-[var(--bg-surface)] text-[var(--text-strong-alt)]">
           <div className="mx-auto grid max-w-360 grid-cols-1 md:grid-cols-3">
             {[
               [ShieldCheck, "Cuero seleccionado", "Materiales legítimos y trazables"],
@@ -415,24 +437,24 @@ export default function App() {
             ].map(([Icon, title, text], index) => (
               <div
                 key={String(title)}
-                className={`flex items-center gap-4 px-6 py-6 lg:px-10 ${index < 2 ? "md:border-r md:border-[#722F37]/10" : ""}`}
+                className={`flex items-center gap-4 px-6 py-6 lg:px-10 ${index < 2 ? "md:border-r md:border-[var(--border-faint)]" : ""}`}
               >
-                <Icon className="shrink-0 text-[#E53935]" size={25} strokeWidth={1.6} />
+                <Icon className="shrink-0 text-[var(--accent)]" size={25} strokeWidth={1.6} />
                 <div>
-                  <p className="text-sm font-semibold text-[#3a3435]">{String(title)}</p>
-                  <p className="mt-1 text-xs text-[#786e70]">{String(text)}</p>
+                  <p className="text-sm font-semibold text-[var(--text-strong-alt)]">{String(title)}</p>
+                  <p className="mt-1 text-xs text-[var(--text-muted)]">{String(text)}</p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section id="estilos" className="scroll-mt-28 bg-white px-5 py-16 lg:px-10 lg:py-24">
+        <section id="estilos" className="scroll-mt-28 bg-[var(--bg-surface)] px-5 py-16 lg:px-10 lg:py-24">
           <div className="mx-auto max-w-360">
             <div className="mb-8 flex items-end justify-between">
               <div>
                 <p className="section-kicker">Encuentra tu pieza</p>
-                <h2 className="mt-2 text-2xl font-semibold text-[#302b2c] sm:text-3xl">
+                <h2 className="mt-2 text-2xl font-semibold text-[var(--text-strong)] sm:text-3xl">
                   Compra por estilo
                 </h2>
               </div>
@@ -455,7 +477,7 @@ export default function App() {
                     setCategory(item);
                     document.getElementById("coleccion")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="group relative aspect-4/5 overflow-hidden bg-[#ded9d1] text-left"
+                  className="group relative aspect-4/5 overflow-hidden bg-[var(--bg-media-alt)] text-left"
                 >
                   <img
                     src={image}
@@ -466,7 +488,7 @@ export default function App() {
                   <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
                     <p className="text-sm text-white/75">{subtitle}</p>
                     <h3 className="mt-1 text-2xl font-semibold">{item}</h3>
-                    <span className="mt-5 inline-flex rounded-full bg-white px-5 py-2.5 text-xs font-bold text-[#302b2c] transition group-hover:bg-[#E53935] group-hover:text-white">
+                    <span className="mt-5 inline-flex rounded-full bg-[var(--bg-surface)] px-5 py-2.5 text-xs font-bold text-[var(--text-strong)] transition group-hover:bg-[var(--accent)] group-hover:text-white">
                       Comprar
                     </span>
                   </div>
@@ -476,30 +498,30 @@ export default function App() {
           </div>
         </section>
 
-        <section id="coleccion" className="scroll-mt-24 bg-[#F7F3EB] px-5 py-16 lg:px-10 lg:py-24">
+        <section id="coleccion" className="scroll-mt-24 bg-[var(--bg-cream)] px-5 py-16 lg:px-10 lg:py-24">
           <div className="mx-auto max-w-360">
             <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
               <div>
                 <p className="section-kicker">Colección Marzzelli</p>
-                <h2 className="mt-2 text-3xl font-semibold text-[#302b2c] sm:text-4xl">
+                <h2 className="mt-2 text-3xl font-semibold text-[var(--text-strong)] sm:text-4xl">
                   Lo mejor de Marzzelli
                 </h2>
-                <p className="mt-4 max-w-xl leading-7 text-[#66575a]">
+                <p className="mt-4 max-w-xl leading-7 text-[var(--text-body)]">
                   Piezas funcionales, honestas y duraderas. Encuentra la que se adapta a tu estilo.
                 </p>
               </div>
-              <label className="flex h-12 w-full items-center gap-3 border-b border-[#722F37]/30 lg:w-72">
+              <label className="flex h-12 w-full items-center gap-3 border-b border-[var(--border-input)] lg:w-72">
                 <Search size={18} />
                 <input
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
-                  className="w-full bg-transparent text-sm text-[#2f292a] outline-none placeholder:text-[#807274]"
+                  className="w-full bg-transparent text-sm text-[var(--text-input)] outline-none placeholder:text-[var(--text-placeholder)]"
                   placeholder="Buscar un producto"
                 />
               </label>
             </div>
 
-            <div className="mt-12 border-y border-[#722F37]/15 py-5">
+            <div className="mt-12 border-y border-[var(--border)] py-5">
               <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
                 <div className="flex gap-2 overflow-x-auto pb-1">
                   {categories.map((item) => (
@@ -508,8 +530,8 @@ export default function App() {
                       onClick={() => setCategory(item)}
                       className={`whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-medium transition ${
                         category === item
-                          ? "bg-[#302b2c] text-white"
-                          : "bg-white text-[#302b2c] hover:bg-[#e6e0d8]"
+                          ? "bg-[var(--bg-ink)] text-white"
+                          : "bg-[var(--bg-surface)] text-[var(--text-strong)] hover:bg-[var(--bg-chip)]"
                       }`}
                     >
                       {item}
@@ -533,7 +555,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="mt-5 flex items-center justify-between text-sm text-[#77686a]">
+            <div className="mt-5 flex items-center justify-between text-sm text-[var(--text-soft)]">
               <span>{filteredProducts.length} productos</span>
               {(category !== "Todos" || gender !== "Todos" || material !== "Todos") && (
                 <button
@@ -542,7 +564,7 @@ export default function App() {
                     setGender("Todos");
                     setMaterial("Todos");
                   }}
-                  className="font-semibold text-[#E53935] hover:underline"
+                  className="font-semibold text-[var(--accent)] hover:underline"
                 >
                   Limpiar filtros
                 </button>
@@ -554,7 +576,7 @@ export default function App() {
                 {filteredProducts.map((product) => (
                   <article key={product.id} className="group">
                     <button
-                      className="relative block aspect-4/5 w-full overflow-hidden bg-[#e9e3da] text-left"
+                      className="relative block aspect-4/5 w-full overflow-hidden bg-[var(--bg-media)] text-left"
                       onClick={() => openProduct(product)}
                       aria-label={`Ver ${product.name}`}
                     >
@@ -563,11 +585,11 @@ export default function App() {
                         alt={product.name}
                         className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
                       />
-                      <span className="absolute bottom-4 right-4 grid h-11 w-11 translate-y-2 place-items-center rounded-full bg-white text-[#302b2c] opacity-0 shadow-xl transition group-hover:translate-y-0 group-hover:opacity-100">
+                      <span className="absolute bottom-4 right-4 grid h-11 w-11 translate-y-2 place-items-center rounded-full bg-[var(--bg-surface)] text-[var(--text-strong)] opacity-0 shadow-xl transition group-hover:translate-y-0 group-hover:opacity-100">
                         <ArrowRight size={18} />
                       </span>
                       {product.tag && (
-                        <span className="absolute left-3 top-3 bg-[#E53935] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                        <span className="absolute left-3 top-3 bg-[var(--accent)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                           {product.tag}
                         </span>
                       )}
@@ -576,19 +598,19 @@ export default function App() {
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           {product.tag ? (
-                            <p className="text-xs font-semibold text-[#E53935]">{product.tag}</p>
+                            <p className="text-xs font-semibold text-[var(--accent)]">{product.tag}</p>
                           ) : (
-                            <p className="text-xs text-[#8a7c7f]">{product.category}</p>
+                            <p className="text-xs text-[var(--text-faint)]">{product.category}</p>
                           )}
                           <button
                             onClick={() => openProduct(product)}
-                            className="mt-1.5 text-left text-base font-semibold text-[#302b2c] hover:text-[#E53935]"
+                            className="mt-1.5 text-left text-base font-semibold text-[var(--text-strong)] hover:text-[var(--accent)]"
                           >
                             {product.name}
                           </button>
-                          <p className="mt-1 text-xs text-[#8a7c7f]">{product.material}</p>
+                          <p className="mt-1 text-xs text-[var(--text-faint)]">{product.material}</p>
                         </div>
-                        <p className="whitespace-nowrap text-sm font-bold text-[#722F37]">
+                        <p className="whitespace-nowrap text-sm font-bold text-[var(--text-heading)]">
                           S/ {product.price}
                         </p>
                       </div>
@@ -597,10 +619,10 @@ export default function App() {
                 ))}
               </div>
             ) : (
-              <div className="mt-10 border border-[#722F37]/15 bg-white px-6 py-20 text-center">
-                <PackageCheck className="mx-auto text-[#E53935]" size={34} />
+              <div className="mt-10 border border-[var(--border)] bg-[var(--bg-surface)] px-6 py-20 text-center">
+                <PackageCheck className="mx-auto text-[var(--accent)]" size={34} />
                 <h3 className="mt-4 font-serif text-2xl font-bold">No encontramos coincidencias</h3>
-                <p className="mt-2 text-sm text-[#77686a]">
+                <p className="mt-2 text-sm text-[var(--text-soft)]">
                   Prueba con otra combinación de filtros.
                 </p>
               </div>
@@ -608,7 +630,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="oficio" className="scroll-mt-20 bg-[#303236] px-5 py-20 lg:px-10 lg:py-28">
+        <section id="oficio" className="scroll-mt-20 bg-[var(--bg-dark)] px-5 py-20 lg:px-10 lg:py-28">
           <div className="mx-auto grid max-w-360 items-center gap-12 lg:grid-cols-[1.1fr_.9fr] lg:gap-20">
             <div className="relative">
               <img
@@ -616,13 +638,13 @@ export default function App() {
                 alt="Artesano trazando un patrón sobre cuero"
                 className="aspect-4/3 w-full object-cover"
               />
-              <div className="absolute -bottom-7 right-0 bg-[#E53935] px-7 py-6 text-white sm:right-7">
+              <div className="absolute -bottom-7 right-0 bg-[var(--accent)] px-7 py-6 text-white sm:right-7">
                 <strong className="block font-serif text-4xl">100%</strong>
                 <span className="text-xs uppercase tracking-[0.18em]">Hecho en Perú</span>
               </div>
             </div>
             <div className="pt-6 text-white lg:pt-0">
-              <p className="section-kicker text-[#ff6965]">El valor del oficio</p>
+              <p className="section-kicker text-[var(--accent-soft)]">El valor del oficio</p>
               <h2 className="mt-4 max-w-xl font-serif text-4xl leading-tight text-white sm:text-5xl">
                 La diferencia se siente en las manos.
               </h2>
@@ -638,7 +660,7 @@ export default function App() {
                   ["03", "Acabado", "Control pieza por pieza."],
                 ].map(([number, title, text]) => (
                   <div key={number} className="border-t border-white/20 pt-4">
-                    <span className="text-xs font-bold text-[#E53935]">{number}</span>
+                    <span className="text-xs font-bold text-[var(--accent)]">{number}</span>
                     <h3 className="mt-3 font-serif text-xl text-white">{title}</h3>
                     <p className="mt-2 text-xs leading-5 text-white/50">{text}</p>
                   </div>
@@ -648,27 +670,27 @@ export default function App() {
           </div>
         </section>
 
-        <section id="empresa" className="scroll-mt-20 bg-white px-5 py-20 lg:px-10 lg:py-28">
+        <section id="empresa" className="scroll-mt-20 bg-[var(--bg-surface)] px-5 py-20 lg:px-10 lg:py-28">
           <div className="mx-auto grid max-w-360 gap-12 lg:grid-cols-[.8fr_1.2fr] lg:gap-24">
             <div>
               <p className="section-kicker">Industria peruana</p>
               <h2 className="section-title mt-4">Una empresa, muchas historias por crear.</h2>
             </div>
             <div>
-              <Quote className="text-[#E53935]" size={35} strokeWidth={1.5} />
-              <p className="mt-6 font-serif text-2xl leading-relaxed text-[#722F37] sm:text-3xl">
+              <Quote className="text-[var(--accent)]" size={35} strokeWidth={1.5} />
+              <p className="mt-6 font-serif text-2xl leading-relaxed text-[var(--text-heading)] sm:text-3xl">
                 En INDUSTRIAS MARZZELLI PERÚ CUEROS E.I.R.L. unimos experiencia manufacturera,
                 diseño contemporáneo y respeto por el material para crear artículos que perduran.
               </p>
-              <div className="mt-8 grid gap-6 border-t border-[#722F37]/15 pt-8 sm:grid-cols-3">
+              <div className="mt-8 grid gap-6 border-t border-[var(--border)] pt-8 sm:grid-cols-3">
                 {[
                   ["Diseño", "Desarrollo propio y soluciones a medida."],
                   ["Calidad", "Revisión minuciosa en cada etapa."],
                   ["Compromiso", "Producción responsable y local."],
                 ].map(([title, text]) => (
                   <div key={title}>
-                    <h3 className="font-bold text-[#722F37]">{title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-[#756669]">{text}</p>
+                    <h3 className="font-bold text-[var(--text-heading)]">{title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">{text}</p>
                   </div>
                 ))}
               </div>
@@ -677,64 +699,74 @@ export default function App() {
         </section>
       </main>
 
-      <footer id="contacto" className="bg-[#f3f4f6] px-5 pt-16 text-[#722F37] lg:px-10">
-        <div className="mx-auto grid max-w-360 gap-12 border-b border-[#722F37]/15 pb-14 md:grid-cols-2 lg:grid-cols-4">
+      <footer id="contacto" className="bg-[var(--bg-header)] px-5 pt-16 text-[var(--text-heading)] lg:px-10">
+        <div className="mx-auto grid max-w-360 gap-12 border-b border-[var(--border)] pb-14 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <img
               src={`${import.meta.env.BASE_URL}marzzelli-logo.png`}
               alt="Marzzelli"
               className="h-10 w-auto"
             />
-            <p className="mt-5 max-w-xs text-sm leading-6 text-[#756669]">
+            <p className="mt-5 max-w-xs text-sm leading-6 text-[var(--text-muted)]">
               Marroquinería fina peruana para acompañarte por muchos años.
             </p>
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#722F37]">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-heading)]">
               Visítanos
             </h3>
-            <p className="mt-5 text-sm leading-7 text-[#756669]">
+            <p className="mt-5 text-sm leading-7 text-[var(--text-muted)]">
               Lima, Perú
               <br />
               Atención previa coordinación
             </p>
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#722F37]">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-heading)]">
               Contacto
             </h3>
-            <p className="mt-5 text-sm leading-7 text-[#756669]">
+            <p className="mt-5 text-sm leading-7 text-[var(--text-muted)]">
               ventas@marzzelli.pe
               <br />
               +51 999 999 999
             </p>
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#722F37]">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-heading)]">
               Síguenos
             </h3>
-            <button className="mt-5 flex items-center gap-3 text-sm text-[#756669] transition hover:text-[#722F37]">
+            <button className="mt-5 flex items-center gap-3 text-sm text-[var(--text-muted)] transition hover:text-[var(--text-heading)]">
               <Camera size={18} /> Instagram
             </button>
           </div>
         </div>
-        <div className="mx-auto flex max-w-360 flex-col gap-2 py-6 text-xs text-[#756669] sm:flex-row sm:justify-between">
+        <div className="mx-auto flex max-w-360 flex-col gap-2 py-6 text-xs text-[var(--text-muted)] sm:flex-row sm:justify-between">
           <span>© 2025 Industrias Marzzelli Perú Cueros E.I.R.L.</span>
           <span>Diseñado y confeccionado en Perú</span>
         </div>
       </footer>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-50 bg-[#f3f4f6] p-6 text-[#722F37] lg:hidden">
+        <div className="fixed inset-0 z-50 bg-[var(--bg-header)] p-6 text-[var(--text-heading)] lg:hidden">
           <div className="flex items-center justify-between">
             <img
               src={`${import.meta.env.BASE_URL}marzzelli-logo.png`}
               alt="Marzzelli"
               className="h-9 w-auto"
             />
-            <button onClick={() => setMenuOpen(false)} aria-label="Cerrar menú">
-              <X />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={toggleTheme}
+                className="grid h-11 w-11 place-items-center rounded-full transition hover:bg-[var(--bg-subtle)]"
+                aria-label={theme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
+                title={theme === "dark" ? "Modo claro" : "Modo oscuro"}
+              >
+                {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+              <button onClick={() => setMenuOpen(false)} aria-label="Cerrar menú">
+                <X />
+              </button>
+            </div>
           </div>
           <nav className="mt-20 flex flex-col gap-8 font-serif text-4xl">
             {[
@@ -761,10 +793,10 @@ export default function App() {
           aria-label={`Detalles de ${selectedProduct.name}`}
           onMouseDown={(event) => event.target === event.currentTarget && setSelectedProduct(null)}
         >
-          <div className="relative grid max-h-[94vh] w-full max-w-5xl overflow-y-auto bg-[#FDFBF7] lg:grid-cols-2">
+          <div className="relative grid max-h-[94vh] w-full max-w-5xl overflow-y-auto bg-[var(--bg-elevated)] lg:grid-cols-2">
             <button
               onClick={() => setSelectedProduct(null)}
-              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center bg-white text-[#722F37] shadow-md hover:text-[#E53935]"
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center bg-[var(--bg-surface)] text-[var(--text-heading)] shadow-md hover:text-[var(--accent)]"
               aria-label="Cerrar"
             >
               <X size={20} />
@@ -775,18 +807,18 @@ export default function App() {
               className="h-[42vh] w-full object-cover lg:h-full lg:min-h-155"
             />
             <div className="flex flex-col justify-center p-7 sm:p-12">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E53935]">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--accent)]">
                 {selectedProduct.category} · {selectedProduct.gender}
               </p>
-              <h2 className="mt-3 font-serif text-4xl font-bold text-[#722F37]">
+              <h2 className="mt-3 font-serif text-4xl font-bold text-[var(--text-heading)]">
                 {selectedProduct.name}
               </h2>
-              <p className="mt-4 text-xl font-bold text-[#722F37]">S/ {selectedProduct.price}</p>
-              <p className="mt-6 leading-7 text-[#756669]">{selectedProduct.description}</p>
-              <div className="mt-8 border-t border-[#722F37]/15 pt-7">
+              <p className="mt-4 text-xl font-bold text-[var(--text-heading)]">S/ {selectedProduct.price}</p>
+              <p className="mt-6 leading-7 text-[var(--text-muted)]">{selectedProduct.description}</p>
+              <div className="mt-8 border-t border-[var(--border)] pt-7">
                 <div className="flex justify-between">
                   <span className="text-sm font-bold">Elige el acabado</span>
-                  <span className="text-sm text-[#756669]">{selectedColor}</span>
+                  <span className="text-sm text-[var(--text-muted)]">{selectedColor}</span>
                 </div>
                 <div className="mt-4 flex gap-3">
                   {selectedProduct.colors.map((color) => (
@@ -794,7 +826,7 @@ export default function App() {
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
                       className={`grid h-10 w-10 place-items-center rounded-full border-2 transition ${
-                        selectedColor === color.name ? "border-[#E53935]" : "border-transparent"
+                        selectedColor === color.name ? "border-[var(--accent)]" : "border-transparent"
                       }`}
                       aria-label={color.name}
                       title={color.name}
@@ -812,7 +844,7 @@ export default function App() {
               <button onClick={addToQuote} className="primary-button mt-9 justify-center">
                 Agregar a cotización <ShoppingBag size={18} />
               </button>
-              <p className="mt-4 text-center text-xs text-[#8d7f81]">
+              <p className="mt-4 text-center text-xs text-[var(--text-note)]">
                 Precio referencial. Confirma disponibilidad y entrega por WhatsApp.
               </p>
             </div>
@@ -831,10 +863,10 @@ export default function App() {
             onClick={() => setCartOpen(false)}
             aria-label="Cerrar cotización"
           />
-          <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-[#FDFBF7] shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[#722F37]/15 px-6 py-6">
+          <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-[var(--bg-elevated)] shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[var(--border)] px-6 py-6">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#E53935]">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--accent)]">
                   Tu selección
                 </p>
                 <h2 className="mt-1 font-serif text-2xl font-bold">Solicitar cotización</h2>
@@ -846,14 +878,14 @@ export default function App() {
             <div className="flex-1 overflow-y-auto p-6">
               {quoteItems.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
-                  <ShoppingBag size={38} strokeWidth={1.3} className="text-[#E53935]" />
+                  <ShoppingBag size={38} strokeWidth={1.3} className="text-[var(--accent)]" />
                   <h3 className="mt-5 font-serif text-2xl font-bold">Tu lista está vacía</h3>
-                  <p className="mt-2 max-w-xs text-sm leading-6 text-[#756669]">
+                  <p className="mt-2 max-w-xs text-sm leading-6 text-[var(--text-muted)]">
                     Explora la colección y agrega los productos que deseas cotizar.
                   </p>
                   <button
                     onClick={() => setCartOpen(false)}
-                    className="mt-7 text-sm font-bold text-[#E53935] hover:underline"
+                    className="mt-7 text-sm font-bold text-[var(--accent)] hover:underline"
                   >
                     Ver colección
                   </button>
@@ -863,14 +895,14 @@ export default function App() {
                   {quoteItems.map((item, index) => (
                     <div
                       key={`${item.product.id}-${item.color}`}
-                      className="flex gap-4 border-b border-[#722F37]/10 pb-6"
+                      className="flex gap-4 border-b border-[var(--border-faint)] pb-6"
                     >
                       <img src={item.product.image} alt="" className="h-24 w-20 object-cover" />
                       <div className="min-w-0 flex-1">
                         <h3 className="font-serif text-lg font-bold">{item.product.name}</h3>
-                        <p className="mt-1 text-xs text-[#756669]">Color: {item.color}</p>
+                        <p className="mt-1 text-xs text-[var(--text-muted)]">Color: {item.color}</p>
                         <div className="mt-3 flex items-center justify-between">
-                          <div className="flex items-center border border-[#722F37]/20">
+                          <div className="flex items-center border border-[var(--border-strong)]">
                             <button
                               onClick={() => changeQuantity(index, -1)}
                               className="p-1.5"
@@ -900,9 +932,9 @@ export default function App() {
               )}
             </div>
             {quoteItems.length > 0 && (
-              <div className="border-t border-[#722F37]/15 bg-white p-6">
+              <div className="border-t border-[var(--border)] bg-[var(--bg-surface)] p-6">
                 <div className="flex justify-between">
-                  <span className="text-sm text-[#756669]">Total referencial</span>
+                  <span className="text-sm text-[var(--text-muted)]">Total referencial</span>
                   <strong>
                     S/{" "}
                     {quoteItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)}
@@ -914,7 +946,7 @@ export default function App() {
                 >
                   Pedir por WhatsApp <ArrowRight size={18} />
                 </button>
-                <p className="mt-3 text-center text-[11px] leading-4 text-[#8d7f81]">
+                <p className="mt-3 text-center text-[11px] leading-4 text-[var(--text-note)]">
                   Se abrirá WhatsApp con el detalle listo para enviar.
                 </p>
               </div>
@@ -938,12 +970,12 @@ function FilterSelect({
   options: string[];
 }) {
   return (
-    <label className="relative flex min-w-0 flex-1 items-center bg-white px-3 sm:min-w-40 sm:flex-none">
+    <label className="relative flex min-w-0 flex-1 items-center bg-[var(--bg-surface)] px-3 sm:min-w-40 sm:flex-none">
       <span className="sr-only">{label}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 w-full appearance-none bg-transparent pr-8 text-xs font-semibold text-[#722F37] outline-none sm:text-sm"
+        className="h-11 w-full appearance-none bg-transparent pr-8 text-xs font-semibold text-[var(--text-heading)] outline-none sm:text-sm"
         aria-label={label}
       >
         {options.map((option) => (

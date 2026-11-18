@@ -9,6 +9,13 @@
     />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <script>
+      try {
+        if (localStorage.getItem("marzzelli-theme") === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (error) {}
+    </script>
     <title>Marzzelli Perú — Marroquinería en cuero</title>
   </head>
   <body>
