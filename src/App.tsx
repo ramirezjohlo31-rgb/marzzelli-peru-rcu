@@ -208,6 +208,7 @@ export default function App() {
   const [selectedColor, setSelectedColor] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [welcomeOpen, setWelcomeOpen] = useState(true);
   const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([]);
   const [theme, setTheme] = useState<"light" | "dark">(() =>
     localStorage.getItem("marzzelli-theme") === "dark" ? "dark" : "light",
@@ -227,11 +228,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = selectedProduct || cartOpen || menuOpen ? "hidden" : "";
+    document.body.style.overflow =
+      selectedProduct || cartOpen || menuOpen || welcomeOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [selectedProduct, cartOpen, menuOpen]);
+  }, [selectedProduct, cartOpen, menuOpen, welcomeOpen]);
 
   const filteredProducts = useMemo(
     () =>
@@ -785,6 +787,8 @@ export default function App() {
         </div>
       )}
 
+      {welcomeOpen && <WelcomeModal onClose={() => setWelcomeOpen(false)} />}
+
       {selectedProduct && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 backdrop-blur-sm sm:p-6"
@@ -986,5 +990,33 @@ function FilterSelect({
       </select>
       <ChevronDown className="pointer-events-none absolute right-3" size={15} />
     </label>
+  );
+}
+
+function WelcomeModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm sm:p-6"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Presentación de la empresa"
+    >
+      <div className="w-full max-w-sm text-center bg-[var(--bg-elevated)] px-7 py-8 shadow-2xl">
+        <img
+          src={`${import.meta.env.BASE_URL}marzzelli-logo.png`}
+          alt="Marzzelli"
+          className="mx-auto h-11 w-auto"
+        />
+        <h2 className="mt-5 font-serif text-2xl font-bold text-[var(--text-heading)]">
+          Industrias Marzzelli Perú Cueros E.I.R.L.
+        </h2>
+        <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
+          Marroquinería fina peruana para acompañarte por muchos años.
+        </p>
+        <button onClick={onClose} className="primary-button mt-8">
+          Aceptar
+        </button>
+      </div>
+    </div>
   );
 }
